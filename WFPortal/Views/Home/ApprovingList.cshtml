@@ -1,0 +1,61 @@
+﻿@model List<Models.CurrentNodeInfoDTO>
+@{
+    ViewBag.Title = "ApprovingList";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    function Agree(instId) {
+        $.ajax({
+            url: "/Register/Approve",
+            data: { "wfInstId": instId },
+            success: function (data) {
+                if (data.Code == 0) {
+                    alert("请求成功:" + data.Msg + ",当前节点:" + data.Tag);
+                } else {
+                    alert("请求成功:" + data.Msg);
+                }
+                window.location.reload();
+            },
+            failed: function (data) {
+                alert("请求失败:" + data);
+            }
+        });
+    }
+
+    function Decline() {
+
+        $.ajax({
+            url: "/Register/Reject",
+            data: { "wfInstId": instId },
+            success: function (data) {
+                if (data.Code == 0) {
+                    alert("请求成功:" + data.Msg+",当前节点:"+data.Tag);
+                } else {
+                    alert("请求成功:" + data.Msg);
+                }
+
+                window.location.reload();
+                
+            },
+            failed: function (data) {
+                alert("请求失败:" + data);
+            }
+        });
+    }
+</script>
+<h2>待审批列表</h2>
+<table>
+    <tr><th>WFId</th><th>用户</th><th>全名</th><th>提交时间</th><th>当前节点</th><th>操作</th></tr>
+    @foreach (Models.CurrentNodeInfoDTO item in Model)
+    {
+        <tr>
+            <td>@item.UID</td>
+            <td>@item.User</td>
+            <td>@item.FullName</td>
+            <td>@item.EnterTime</td>
+            @*<td>@item.ExitTime</td>*@
+            <td>@item.CurrentNode</td>
+            <td><input type='button' onclick="Agree('@item.UID')" value='同意' /><input type='button' onclick="Decline('@item.UID')" value='驳回' /></td>
+        </tr>
+    }
+</table>

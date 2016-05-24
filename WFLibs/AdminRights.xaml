@@ -1,0 +1,154 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="WFLibs.AdminRights"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:local="clr-namespace:WFLibs"
+ xmlns:m="clr-namespace:Models;assembly=Models"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="model" Type="InArgument(m:User)" />
+    <x:Property Name="curApproveUser" Type="InArgument(x:String)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>WFLibs.AdminRights</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Models</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>Models</AssemblyReference>
+      <AssemblyReference>System.Workflow.Runtime</AssemblyReference>
+      <AssemblyReference>System.Workflow.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Activities.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>WFLibs</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Flowchart DisplayName="管理员权限申请" sap2010:WorkflowViewState.IdRef="Flowchart_1">
+    <Flowchart.StartNode>
+      <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_1">
+        <local:WaitForInput DisplayName="小编审批" sap2010:WorkflowViewState.IdRef="WaitForInput_1" NodeName="EditorNode" OperationNames="同意,驳回">
+          <local:WaitForInput.workflowModel>
+            <InOutArgument x:TypeArguments="m:User">
+              <mca:CSharpReference x:TypeArguments="m:User">model</mca:CSharpReference>
+            </InOutArgument>
+          </local:WaitForInput.workflowModel>
+        </local:WaitForInput>
+        <FlowStep.Next>
+          <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_2">
+            <local:WaitForInput DisplayName="版主审批" sap2010:WorkflowViewState.IdRef="WaitForInput_2" NodeName="BanzhuNode" OperationNames="同意,驳回">
+              <local:WaitForInput.workflowModel>
+                <InOutArgument x:TypeArguments="m:User">
+                  <mca:CSharpReference x:TypeArguments="m:User">model</mca:CSharpReference>
+                </InOutArgument>
+              </local:WaitForInput.workflowModel>
+            </local:WaitForInput>
+            <FlowStep.Next>
+              <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_3">
+                <local:WaitForInput DisplayName="管理员审批" sap2010:WorkflowViewState.IdRef="WaitForInput_3" NodeName="AdminNode" OperationNames="同意,驳回">
+                  <local:WaitForInput.workflowModel>
+                    <InOutArgument x:TypeArguments="m:User">
+                      <mca:CSharpReference x:TypeArguments="m:User">model</mca:CSharpReference>
+                    </InOutArgument>
+                  </local:WaitForInput.workflowModel>
+                </local:WaitForInput>
+              </FlowStep>
+            </FlowStep.Next>
+          </FlowStep>
+        </FlowStep.Next>
+      </FlowStep>
+    </Flowchart.StartNode>
+    <x:Reference>__ReferenceID0</x:Reference>
+    <x:Reference>__ReferenceID1</x:Reference>
+    <x:Reference>__ReferenceID2</x:Reference>
+    <sads:DebugSymbol.Symbol>dzFEOlxNeVByb2plY3RzXFdGXFdGUG9ydGFsXFdGTGlic1xBZG1pblJpZ2h0cy54YW1sCjUDWw8CAQE4CT4eAgEMQQ1HIgIBB0oRUCYCAQI7DztYAgEOOIYBOI0BAgENRBNEXAIBCUGKAUGRAQIBCE0XTWACAQRKjgFKlQECAQM=</sads:DebugSymbol.Symbol>
+  </Flowchart>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="WaitForInput_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WaitForInput_2" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WaitForInput_3" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_3">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">220,269</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">220,199</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">320,221 320,269</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_1">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">220,129</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">320,151 320,199</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="614,636">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">270,2.5</av:Point>
+            <av:Size x:Key="ShapeSize">60,75</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,107.5 320,107.5 320,129</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WFLibs.AdminRights" sap:VirtualizedContainerService.HintSize="654,716" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

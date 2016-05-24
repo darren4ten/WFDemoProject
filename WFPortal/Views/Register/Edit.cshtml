@@ -1,0 +1,26 @@
+﻿@model Models.User
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+@using (Html.BeginForm("Edit", "Register", FormMethod.Post, new
+{
+    enctype = "multipart/form-data",
+    id = "editForm",
+    @class = "horizontal-form"
+}))
+{
+    //string id = Model.ID == null ? "自动生成" : Model.ID.ToString();
+    @Html.AntiForgeryToken();
+    <div>
+        <table>
+            <tr><td>@Html.LabelFor(m => m.ID)</td><td>...</td><td>@Html.ValidationMessageFor(m => m.ID)</td></tr>
+            <tr><td>@Html.LabelFor(m => m.Name)</td><td>@Html.EditorFor(m => m.Name)</td><td>@Html.ValidationMessageFor(m => m.Name)</td></tr>
+            <tr><td>@Html.LabelFor(m => m.Age)</td><td>@Html.EditorFor(m => m.Age)</td><td>@Html.ValidationMessageFor(m => m.Age)</td></tr>
+            <tr><td>@Html.LabelFor(m => m.FullName)</td><td>@Html.EditorFor(m => m.FullName)</td><td>@Html.ValidationMessageFor(m => m.FullName)</td></tr>
+            <tr><td>@Html.LabelFor(m => m.Department)</td><td>@Html.EditorFor(m => m.Department)</td><td>@Html.ValidationMessageFor(m => m.Department)</td></tr>
+        </table>
+    </div>
+    <input type="submit" value="提交" />
+}
