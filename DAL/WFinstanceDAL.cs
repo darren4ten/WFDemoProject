@@ -63,8 +63,9 @@ namespace DAL
                 inst = new WFInstance();
                 inst.WfInstanceId = Guid.Parse(uid);
                 inst.SubmitTime = DateTime.Now;
+                inst.User = new UserDAL().GetByWfId(uid).FirstOrDefault().Name;
             }
-
+            //inst.User = new UserDAL().;
             inst.State = state;
             inst.ApproveTime = DateTime.Now;
             inst.ApproveUser = optUser;

@@ -67,6 +67,10 @@ namespace WFLibs
                     //更新状态
                     WFinstanceDAL wfDal = new WFinstanceDAL();
                     wfDal.Add(user.WorkflowInstId.ToString(), approver, "驳回");
+
+                    WFCurrentNodeInfoDAL infoDal = new WFCurrentNodeInfoDAL();
+                    infoDal.UpdateExitTime(user.WorkflowInstId.ToString(), DateTime.Now);
+
                     instance.Cancel();
                     retMsg = "驳回成功";
                 }

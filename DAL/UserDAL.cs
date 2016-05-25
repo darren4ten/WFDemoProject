@@ -48,5 +48,30 @@ namespace DAL
             return list;
 
         }
+
+        public List<User> GetByWfId(string uid)
+        {
+            string sql = "select * from [user]  where WorkflowInstId='" + uid + "'";
+         
+            DataTable dt = SqlHelper.ExecuteDatatable(sql);
+            List<User> list = new List<User>();
+            foreach (DataRow item in dt.Rows)
+            {
+                User user = new User();
+                user.ID = Convert.ToInt32(item[0]);
+                user.Name = item[1] as string;
+                user.Age = Convert.ToInt32(item[2]);
+                user.FullName = Convert.ToString(item[3]);
+                user.Department = Convert.ToString(item[4]);
+                if (item[5] != null && !string.IsNullOrEmpty(Convert.ToString(item[5])))
+                {
+                    user.WorkflowInstId = Guid.Parse(Convert.ToString(item[5]));
+                }
+
+                list.Add(user);
+            }
+            return list;
+
+        }
     }
 }
