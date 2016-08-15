@@ -35,5 +35,11 @@ namespace WFPortal.Controllers
             var dal = new WFinstanceDAL();
             return View(dal.Get());
         }
+
+        public ActionResult MyApplyList()
+        {
+            var dal = new WFinstanceDAL();
+            return View(dal.Get());
+        }
     }
 }

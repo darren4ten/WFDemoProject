@@ -60,7 +60,7 @@ namespace WFLibs
                 AdminRights rights = new AdminRights();
                 instance = new WorkflowApplication(rights);
                 this.InitWorkflowApplication();
-                instance.Load(user.WorkflowInstId);
+                 instance.Load(user.WorkflowInstId);
                 string approver = "SuperAdmin";
                 if (reject)
                 {

@@ -121,7 +121,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\AdminLTE\css\AdminLTE.css" />
     <Content Include="Content\AdminLTE\css\AdminLTE.min.css" />
-    <Content Include="Content\AdminLTE\css\font-awesome.min.css" />
     <Content Include="Content\AdminLTE\css\skins\skin-black-light.css" />
     <Content Include="Content\AdminLTE\css\skins\skin-black-light.min.css" />
     <Content Include="Content\AdminLTE\css\skins\skin-black.css" />
@@ -186,6 +185,10 @@
     <Content Include="Content\bootstrap\js\bootstrap.js" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\bootstrap\js\npm.js" />
+    <Content Include="Content\css\font-awesome-ie7.css" />
+    <Content Include="Content\css\font-awesome-ie7.min.css" />
+    <Content Include="Content\css\font-awesome.css" />
+    <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="Scripts\app.min.js" />
@@ -1086,6 +1089,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index - 复制.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\AdminLTE\css\font\fontawesome-webfont.svg" />
+    <Content Include="Content\AdminLTE\css\font\fontawesome-webfont.ttf" />
+    <Content Include="Content\AdminLTE\css\font\fontawesome-webfont.woff" />
+    <Content Include="Content\AdminLTE\css\font\FontAwesome.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\css\font\fontawesome-webfont.eot" />
+    <Content Include="Content\css\font\fontawesome-webfont.svg" />
+    <Content Include="Content\css\font\fontawesome-webfont.ttf" />
+    <Content Include="Content\css\font\fontawesome-webfont.woff" />
+    <Content Include="Content\css\font\FontAwesome.otf" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
