@@ -1,4 +1,5 @@
 ﻿using Models;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,68 +11,34 @@ namespace DAL
 {
     public class UserDAL
     {
-        public int Add(User user)
+        private SqlSugarClient _sqlClient = SqlSugarDao.GetInstance();
+        public User Add(User user)
         {
-            return SqlHelper.ExecuteNonQuery(string.Format("insert into [User](Name,Age,FullName,Department) values('{0}',{1},'{2}','{3}');", user.Name, user.Age, user.FullName, user.Department));
+            int id = Convert.ToInt32(_sqlClient.Insert(user));
+            user.ID = id;
+            return user;
         }
 
-        public int Update(User user)
+        public bool Update(User user)
         {
-            string sql = string.Format("update [User] set Name='{0}',Age={1},FullName='{2}',Department='{3}',WorkflowInstId='{4}' where id={5}", user.Name, user.Age, user.FullName, user.Department, user.WorkflowInstId, user.ID);
-            return SqlHelper.ExecuteNonQuery(sql);
+            return _sqlClient.Update<User>(user, p => p.ID == user.ID);
         }
+
         public List<User> Get(int id = -1)
         {
-            string sql = "select * from [user] ";
-            if (id > -1)
+            if (id == -1)
             {
-                sql += " where Id=" + id;
+                return _sqlClient.Queryable<User>().ToList();
             }
-
-            DataTable dt = SqlHelper.ExecuteDatatable(sql);
-            List<User> list = new List<User>();
-            foreach (DataRow item in dt.Rows)
+            else
             {
-                User user = new User();
-                user.ID = Convert.ToInt32(item[0]);
-                user.Name = item[1] as string;
-                user.Age = Convert.ToInt32(item[2]);
-                user.FullName = Convert.ToString(item[3]);
-                user.Department = Convert.ToString(item[4]);
-                if (item[5] != null && !string.IsNullOrEmpty(Convert.ToString(item[5])))
-                {
-                    user.WorkflowInstId = Guid.Parse(Convert.ToString(item[5]));
-                }
-
-                list.Add(user);
+                return _sqlClient.Queryable<User>().Where(p => p.ID == id).ToList();
             }
-            return list;
-
         }
 
-        public List<User> GetByWfId(string uid)
+        public Queryable<User> GetByWfId(string uid)
         {
-            string sql = "select * from [user]  where WorkflowInstId='" + uid + "'";
-         
-            DataTable dt = SqlHelper.ExecuteDatatable(sql);
-            List<User> list = new List<User>();
-            foreach (DataRow item in dt.Rows)
-            {
-                User user = new User();
-                user.ID = Convert.ToInt32(item[0]);
-                user.Name = item[1] as string;
-                user.Age = Convert.ToInt32(item[2]);
-                user.FullName = Convert.ToString(item[3]);
-                user.Department = Convert.ToString(item[4]);
-                if (item[5] != null && !string.IsNullOrEmpty(Convert.ToString(item[5])))
-                {
-                    user.WorkflowInstId = Guid.Parse(Convert.ToString(item[5]));
-                }
-
-                list.Add(user);
-            }
-            return list;
-
+            return _sqlClient.Queryable<User>().Where(p => p.WorkflowInstId.ToString() == uid);
         }
     }
 }

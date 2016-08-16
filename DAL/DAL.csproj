@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SqlSugar, Version=2.4.5.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\sqlSugar.2.4.5.6\lib\net40\SqlSugar.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -40,12 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SqlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="DbSql\[WFCurrentNodeInfo].sql" />
     <Content Include="DbSql\[WFInstances].sql" />
     <Content Include="DbSql\[User].sql" />
     <Content Include="DbSql\[vwCurrentNodeAndUserInfo].sql" />
+    <Compile Include="SqlSugarDao.cs" />
     <Compile Include="WFCurrentNodeInfoDAL.cs" />
     <Compile Include="WFinstanceDAL.cs" />
     <Compile Include="UserDAL.cs" />
@@ -56,9 +60,12 @@
       <Name>Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="DbSql\testDb.bak" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

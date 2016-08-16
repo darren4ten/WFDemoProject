@@ -1,4 +1,4 @@
-﻿@model List<Models.WFInstance>
+﻿@model List<Models.WFInstances>
 @{
     ViewBag.Title = "ApprovingList";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -11,7 +11,7 @@
     <div class="box-body ">
         <table class="table table-bordered">
             <tr><th>WFId</th><th>用户</th><th>状态</th><th>提交时间</th><th>审批时间</th><th>审批用户</th><th>共享用户</th><th>当前节点</th></tr>
-            @foreach (Models.WFInstance item in Model)
+            @foreach (Models.WFInstances item in Model)
             {
                 <tr>
                     <td>@item.WfInstanceId</td>

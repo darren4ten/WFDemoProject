@@ -8,8 +8,8 @@ namespace Models
 {
     public class CurrentNodeInfoDTO
     {
-        public string UID { get; set; }
-        public string User { get; set; }
+        public Guid WFinstId { get; set; }
+        public string Name { get; set; }
         public string FullName { get; set; }
         public string CurrentNode { get; set; }
         public DateTime EnterTime { get; set; }

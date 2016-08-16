@@ -38,24 +38,22 @@ namespace WFPortal.Controllers
         public ActionResult Edit(User user)
         {
             var userDAL = new UserDAL();
-            int ret = userDAL.Add(user);
-            if (ret > 0)
+            //新增
+
+            if (user.ID <1)
             {
-                user = userDAL.Get().Where(p => p.Name == user.Name && p.FullName == user.FullName).FirstOrDefault();
+                user = userDAL.Add(user);
                 var engine = new WFEngine();
                 engine.ExecuteWF(user);
-
-                //WFInstance inst = new WFInstance();
-                //inst.WfInstanceId = user.WorkflowInstId;
-                //inst.User = user.Name;
-                //inst.State = "编辑审批";
-                //inst.SubmitTime = DateTime.Now;
-                //inst.ApproveTime = Convert.ToDateTime("1990/1/1");
-                //inst.ShareUsers = "";
-                //var wfDal = new WFinstanceDAL();
-                //wfDal.Add(inst);
+                //更新wfid
                 userDAL.Update(user);
             }
+            else
+            {
+                //编辑
+                userDAL.Update(user);
+            }
+           
             Redirect("~/Register/Edit");
             return View();
         }

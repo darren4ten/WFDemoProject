@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class WFInstance
+    public class WFInstances
     {
         [DisplayName("WfInstanceId")]
         public Guid WfInstanceId { get; set; }

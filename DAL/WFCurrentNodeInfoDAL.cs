@@ -1,4 +1,5 @@
 ﻿using Models;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,74 +11,53 @@ namespace DAL
 {
     public class WFCurrentNodeInfoDAL
     {
-        public int Add(WFCurrentNodeInfo info)
+        private SqlSugarClient _sqlClient = SqlSugarDao.GetInstance();
+        public WFCurrentNodeInfo Add(WFCurrentNodeInfo info)
         {
-            return SqlHelper.ExecuteNonQuery(string.Format("insert into [WFCurrentNodeInfo] values('{0}','{1}','{2}','{3}');", info.WFinstId, info.CurrentNode, info.EnterTime, info.ExitTime));
-
+            var obj = _sqlClient.Insert(info);
+            return obj == null ? null : obj as WFCurrentNodeInfo;
         }
 
-        public int UpdateExitTime(string uid, DateTime exitTime)
+        public bool UpdateExitTime(string uid, DateTime exitTime)
         {
-            string sql = string.Format("update [WFCurrentNodeInfo] set ExitTime='{0}' where WFinstId='{1}'", exitTime, uid);
-            return SqlHelper.ExecuteNonQuery(sql);
+            //string sql = string.Format("update [WFCurrentNodeInfo] set ExitTime='{0}' where WFinstId='{1}'", exitTime, uid);
+            //return SqlHelper.ExecuteNonQuery(sql);
+            return _sqlClient.Update<WFCurrentNodeInfo>(new { ExitTime = exitTime }, p => p.WFinstId.ToString() == uid);
         }
 
-        public List<WFCurrentNodeInfo> Get(int id = -1)
+        public Queryable<WFCurrentNodeInfo> Get(string id = "")
         {
-            string sql = "select * from [WFCurrentNodeInfo] ";
-            if (id > -1)
+            if (string.IsNullOrEmpty(id))
             {
-                sql += " where WFinstId='" + id + "'";
-            }
-
-            DataTable dt = SqlHelper.ExecuteDatatable(sql);
-            List<WFCurrentNodeInfo> list = new List<WFCurrentNodeInfo>();
-            foreach (DataRow item in dt.Rows)
-            {
-                WFCurrentNodeInfo info = new WFCurrentNodeInfo();
-                info.WFinstId = Guid.Parse(item[0].ToString());
-                info.CurrentNode = item[1] as string;
-                info.EnterTime = Convert.ToDateTime(item[2]);
-                info.ExitTime = Convert.ToDateTime(item[3]);
-
-                list.Add(info);
-            }
-            return list;
-
-        }
-
-        public List<WFCurrentNodeInfo> GetAllPendingNodes(int id = -1)
-        {
-            string sql = "select * from [WFCurrentNodeInfo] ";
-            if (id > -1)
-            {
-                sql += " where WFinstId='" + id + "' and ExitTime<'1990/1/2'";
+                return _sqlClient.Queryable<WFCurrentNodeInfo>();
             }
             else
             {
-                sql += " where ExitTime<'1990/1/2'";
+                return _sqlClient.Queryable<WFCurrentNodeInfo>().Where(p => p.WFinstId.ToString() == id);
             }
-
-            DataTable dt = SqlHelper.ExecuteDatatable(sql);
-            List<WFCurrentNodeInfo> list = new List<WFCurrentNodeInfo>();
-            foreach (DataRow item in dt.Rows)
-            {
-                WFCurrentNodeInfo info = new WFCurrentNodeInfo();
-                info.WFinstId = Guid.Parse(item[0].ToString());
-                info.CurrentNode = item[1] as string;
-                info.EnterTime = Convert.ToDateTime(item[2]);
-                info.ExitTime = Convert.ToDateTime(item[3]);
-
-                list.Add(info);
-            }
-            return list;
-
         }
 
-        public List<CurrentNodeInfoDTO> GetCurrentPendingNodesDTO(int id = -1)
+        public Queryable<WFCurrentNodeInfo> GetAllPendingNodes(string id = "")
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return _sqlClient.Queryable<WFCurrentNodeInfo>();
+            }
+            else
+            {
+                return _sqlClient.Queryable<WFCurrentNodeInfo>().Where(p => p.WFinstId.ToString() == id);
+            }
+        }
+
+        /// <summary>
+        /// 获取当前节点信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<CurrentNodeInfoDTO> GetCurrentPendingNodesDTO(string id = "")
         {
             string sql = "select * from [vwCurrentNodeAndUserInfo] ";
-            if (id > -1)
+            if (!string.IsNullOrEmpty(id))
             {
                 sql += " where WFinstId='" + id + "' and ExitTime<'1990/1/2'";
             }
@@ -86,20 +66,7 @@ namespace DAL
                 sql += " where ExitTime<'1990/1/2'";
             }
 
-            DataTable dt = SqlHelper.ExecuteDatatable(sql);
-            List<CurrentNodeInfoDTO> list = new List<CurrentNodeInfoDTO>();
-            foreach (DataRow item in dt.Rows)
-            {
-                CurrentNodeInfoDTO info = new CurrentNodeInfoDTO();
-                info.UID = item[0].ToString();
-                info.CurrentNode = item[1] as string;
-                info.EnterTime = Convert.ToDateTime(item[2]);
-                info.ExitTime = Convert.ToDateTime(item[3]);
-                info.User = Convert.ToString(item[4]);
-                info.FullName = item[5].ToString();
-                list.Add(info);
-            }
-            return list;
+            return _sqlClient.GetList<CurrentNodeInfoDTO>(sql);
 
         }
 

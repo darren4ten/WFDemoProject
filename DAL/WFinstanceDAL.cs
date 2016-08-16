@@ -1,4 +1,5 @@
 ﻿using Models;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,43 +11,29 @@ namespace DAL
 {
     public class WFinstanceDAL
     {
-        public int Add(WFInstance inst)
+        private SqlSugarClient _sqlClient = SqlSugarDao.GetInstance();
+        public WFInstances Add(WFInstances inst)
         {
-            return SqlHelper.ExecuteNonQuery(string.Format("insert into [WFInstances] values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}');", inst.WfInstanceId, inst.User, inst.State, inst.SubmitTime.ToString(), inst.ApproveTime.ToString(), inst.ApproveUser, inst.ShareUsers, inst.CurrentNode));
+            object obj = _sqlClient.Insert<WFInstances>(inst);
+            return obj as WFInstances;
         }
 
-        public int Update(WFInstance inst)
+        public bool Update(WFInstances inst)
         {
-            string sql = string.Format("update WFInstances set State='{0}',ApproveTime='{1}',ApproveUser='{2}' where WfInstanceId='{3}'", inst.State, inst.ApproveTime, inst.ApproveUser, inst.WfInstanceId);
-            return SqlHelper.ExecuteNonQuery(sql);
+            return _sqlClient.Update<WFInstances>(inst, p => p.WfInstanceId == inst.WfInstanceId);
         }
 
-        public List<WFInstance> Get(string id = "")
+        public List<WFInstances> Get(string id = "")
         {
-
-            string sql = "select * from [WFInstances] ";
+            var instances = _sqlClient.Queryable<WFInstances>();
             if (!string.IsNullOrEmpty(id))
             {
-                sql += " where WfInstanceId='" + Guid.Parse(id) + "'";
+                instances = instances.Where(p => p.WfInstanceId.ToString() == id);
+
             }
-            sql += " order by ApproveTime desc";
-            DataTable dt = SqlHelper.ExecuteDatatable(sql);
-            List<WFInstance> list = new List<WFInstance>();
-            foreach (DataRow item in dt.Rows)
-            {
-                WFInstance inst = new WFInstance();
-                inst.WfInstanceId = Guid.Parse(item[0].ToString());
-                inst.User = Convert.ToString(item[1]);
-                inst.State = Convert.ToString(item[2]);
-                inst.SubmitTime = Convert.ToDateTime(item[3]);
-                inst.ApproveTime = Convert.ToDateTime(item[4]);
-                inst.ApproveUser = Convert.ToString(item[5]);
-                inst.ShareUsers = Convert.ToString(item[6]);
-                inst.CurrentNode = Convert.ToString(item[7]);
-                list.Add(inst);
-            }
-            return list;
+            return instances.OrderBy(p => p.ApproveTime, OrderByType.desc).ToList();
         }
+
         /// <summary>
         /// 添加新的历史记录
         /// </summary>
@@ -54,13 +41,13 @@ namespace DAL
         /// <param name="approver"></param>
         /// <param name="nodeName"></param>
         /// <returns></returns>
-        public int Add(string uid, string optUser, string state, string nodeName = "")
+        public WFInstances Add(string uid, string optUser, string state, string nodeName = "")
         {
             WFinstanceDAL wfDal = new WFinstanceDAL();
-            WFInstance inst = wfDal.Get(uid).FirstOrDefault();
+            WFInstances inst = wfDal.Get(uid).FirstOrDefault();
             if (inst == null)
             {
-                inst = new WFInstance();
+                inst = new WFInstances();
                 inst.WfInstanceId = Guid.Parse(uid);
                 inst.SubmitTime = DateTime.Now;
                 inst.User = new UserDAL().GetByWfId(uid).FirstOrDefault().Name;

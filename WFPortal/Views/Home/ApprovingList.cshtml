@@ -58,13 +58,13 @@
             @foreach (Models.CurrentNodeInfoDTO item in Model)
             {
                 <tr>
-                    <td>@item.UID</td>
-                    <td>@item.User</td>
+                    <td>@item.WFinstId</td>
+                    <td>@item.Name</td>
                     <td>@item.FullName</td>
                     <td>@item.EnterTime</td>
                     @*<td>@item.ExitTime</td>*@
                     <td>@item.CurrentNode</td>
-                    <td><input type='button' onclick="Agree('@item.UID')" value='同意' /><input type='button' onclick="Decline('@item.UID')" value='驳回' /></td>
+                    <td><input type='button' onclick="Agree('@item.WFinstId')" value='同意' /><input type='button' onclick="Decline('@item.WFinstId')" value='驳回' /></td>
                 </tr>
             }
         </table>
